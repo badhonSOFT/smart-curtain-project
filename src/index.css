@@ -1,0 +1,224 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Two-Color Theme: Warm Gray & Gold */
+    --background: 0 0% 100%;
+    --foreground: 30 8% 20%;
+    
+    /* Rainbow colors */
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 30 8% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 8% 20%;
+
+    /* Primary: Warm Gray */
+    --primary: 30 8% 35%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Light Warm Gray */
+    --secondary: 30 8% 95%;
+    --secondary-foreground: 30 8% 20%;
+
+    --muted: 30 8% 95%;
+    --muted-foreground: 30 8% 45%;
+
+    /* Accent: Gold/Amber */
+    --accent: 45 100% 55%;
+    --accent-foreground: 30 8% 20%;
+    --accent-warm: 45 100% 65%;
+
+    --destructive: 45 100% 55%;
+    --destructive-foreground: 30 8% 20%;
+
+    --border: 30 8% 90%;
+    --input: 30 8% 95%;
+    --ring: 30 8% 35%;
+
+    /* Two-color gradients */
+    --hero-gradient: linear-gradient(135deg, hsl(30 8% 98%), hsl(45 100% 95%));
+    --gray-gradient: linear-gradient(135deg, hsl(30 8% 35%), hsl(30 8% 50%));
+    --gold-gradient: linear-gradient(135deg, hsl(45 100% 55%), hsl(45 100% 65%));
+    --glass-gradient: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+    
+    /* Two-color shadows */
+    --shadow-gray: 0 10px 40px -10px hsl(30 8% 35% / 0.15);
+    --shadow-gold: 0 8px 30px -8px hsl(45 100% 55% / 0.25);
+    --shadow-glass: 0 8px 32px -8px hsl(30 8% 20% / 0.08);
+    --shadow-float: 0 20px 60px -10px hsl(30 8% 35% / 0.2);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 30 8% 98%;
+    --sidebar-foreground: 30 8% 20%;
+    --sidebar-primary: 30 8% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 45 100% 95%;
+    --sidebar-accent-foreground: 45 100% 40%;
+    --sidebar-border: 30 8% 90%;
+    --sidebar-ring: 30 8% 35%;
+  }
+
+  .dark {
+    /* Dark mode with warm gray & gold */
+    --background: 30 8% 8%;
+    --foreground: 0 0% 100%;
+
+    --card: 30 8% 12%;
+    --card-foreground: 0 0% 100%;
+
+    --popover: 30 8% 12%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 30 8% 70%;
+    --primary-foreground: 30 8% 8%;
+
+    --secondary: 30 8% 20%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 30 8% 20%;
+    --muted-foreground: 30 8% 70%;
+
+    --accent: 45 100% 60%;
+    --accent-foreground: 30 8% 8%;
+
+    --destructive: 45 100% 60%;
+    --destructive-foreground: 30 8% 8%;
+
+    --border: 30 8% 25%;
+    --input: 30 8% 20%;
+    --ring: 30 8% 70%;
+    
+    --sidebar-background: 30 8% 12%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 30 8% 70%;
+    --sidebar-primary-foreground: 30 8% 8%;
+    --sidebar-accent: 45 100% 20%;
+    --sidebar-accent-foreground: 45 100% 70%;
+    --sidebar-border: 30 8% 25%;
+    --sidebar-ring: 30 8% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    scroll-behavior: smooth;
+  }
+  
+  /* Apple-inspired typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--heading-weight);
+    letter-spacing: -0.025em;
+  }
+  
+  /* Two-color utility classes */
+  .hero-gradient {
+    background: var(--hero-gradient);
+  }
+  
+  .gray-gradient {
+    background: var(--gray-gradient);
+  }
+  
+  .gold-gradient {
+    background: var(--gold-gradient);
+  }
+  
+  .glass-effect {
+    background: var(--glass-gradient);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--glass-shadow);
+  }
+  
+  .sunlight-glow {
+    box-shadow: 0 0 80px hsl(var(--sunlight) / 0.3);
+  }
+  
+  .hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--hover-lift);
+  }
+  
+  /* Smooth animations */
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Scroll snap for smooth navigation */
+  .scroll-snap-y {
+    scroll-snap-type: y mandatory;
+  }
+  
+  .scroll-snap-start {
+    scroll-snap-align: start;
+  }
+  
+  /* Mobile-specific improvements */
+  @media (max-width: 768px) {
+    .scroll-snap-y {
+      scroll-snap-type: none;
+    }
+    
+    .glass-effect {
+      backdrop-filter: blur(10px);
+    }
+    
+    /* Improve touch targets */
+    button, a {
+      min-height: 44px;
+    }
+    
+    /* Better text readability on mobile */
+    body {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+  }
+  
+  /* Prevent horizontal scroll */
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  /* Improve mobile performance */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
