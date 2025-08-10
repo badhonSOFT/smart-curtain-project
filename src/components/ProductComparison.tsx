@@ -1,10 +1,63 @@
+import { useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { ShiningText } from "@/components/ui/shining-text";
 import { CheckCircle, ArrowRight, Wifi, Zap } from "lucide-react";
 import slidingCurtain from "@/assets/sliding-curtain.jpg";
 import rollerCurtain from "@/assets/roller-curtain.jpg";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const ProductComparison = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (sectionRef.current) {
+      gsap.fromTo(".compare-title",
+        { opacity: 0, y: 50, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.4,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            end: "top 30%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      gsap.fromTo(".compare-card",
+        { 
+          opacity: 0, 
+          x: (index) => index % 2 === 0 ? -100 : 100, 
+          y: 50,
+          scale: 0.8,
+          rotationY: (index) => index % 2 === 0 ? -20 : 20
+        },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          rotationY: 0,
+          duration: 1.2,
+          stagger: 0.4,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 60%",
+            end: "top 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+  }, []);
   const curtainTypes = [
     {
       id: "sliding",
@@ -37,10 +90,10 @@ const ProductComparison = () => {
   ];
 
   return (
-    <section className="py-12 sm:py-20 scroll-snap-start">
+    <section ref={sectionRef} id="compare" className="py-12 sm:py-20 scroll-snap-start">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="compare-title text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             Choose Your Perfect Smart Curtain
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-2">
@@ -50,7 +103,7 @@ const ProductComparison = () => {
 
         <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
           {curtainTypes.map((curtain) => (
-            <Card key={curtain.id} className="relative overflow-hidden hover-lift border-0 shadow-lg">
+            <Card key={curtain.id} className="compare-card relative overflow-hidden hover-lift border-0 shadow-lg">
               {/* Badge */}
               <div className="absolute top-4 left-4 z-10">
                 <div className={`${curtain.color} text-white px-3 py-1 rounded-full text-sm font-medium`}>

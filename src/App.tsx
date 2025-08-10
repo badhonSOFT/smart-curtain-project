@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import EffortlessLiving from "./pages/EffortlessLiving";
+import ProductSpecs from "./pages/ProductSpecs";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -23,6 +24,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/effortless-living" element={<EffortlessLiving />} />
+          <Route path="/specs" element={<ProductSpecs />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />

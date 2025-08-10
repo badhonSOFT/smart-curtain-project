@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { 
   Smartphone, 
   Shield, 
@@ -8,8 +9,57 @@ import {
   Sun,
   Volume2 
 } from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const FeaturesSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (sectionRef.current) {
+      gsap.fromTo(".feature-title",
+        { opacity: 0, y: 50, rotationX: 10 },
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 1.4,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            end: "top 30%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      gsap.fromTo(".feature-card",
+        { opacity: 0, y: 80, scale: 0.9, rotationY: 15 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotationY: 0,
+          duration: 1.0,
+          stagger: {
+            amount: 0.8,
+            from: "start",
+            ease: "power2.out"
+          },
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 60%",
+            end: "top 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+  }, []);
   const features = [
     {
       icon: Smartphone,
@@ -54,16 +104,16 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <section id="features" className="py-12 sm:py-20 bg-secondary/30 scroll-snap-start">
+    <section ref={sectionRef} id="features" className="py-12 sm:py-20 bg-secondary/30 scroll-snap-start">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="feature-title text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             Everything You Need for Smart Living
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 sm:mb-6 px-2">
+          <p className="feature-title text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-4 sm:mb-6 px-2">
             Premium features without premium markup. Every smart curtain comes with these capabilities built-in.
           </p>
-          <p className="text-sm sm:text-base md:text-lg text-accent font-medium px-2">
+          <p className="feature-title text-sm sm:text-base md:text-lg text-accent font-medium px-2">
             Everything you need — with no inflated prices or fake features. That's #TruePrice.
           </p>
         </div>
@@ -72,7 +122,7 @@ const FeaturesSection = () => {
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className="glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 hover-lift group"
+              className="feature-card glass-effect rounded-xl sm:rounded-2xl p-4 sm:p-6 hover-lift group"
             >
               <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors duration-300 mb-3 sm:mb-4">
                 <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />

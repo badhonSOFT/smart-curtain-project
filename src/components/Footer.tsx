@@ -1,9 +1,10 @@
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLinkClick = (href: string) => {
     if (href.startsWith('#')) {
@@ -53,15 +54,40 @@ const Footer = () => {
               </div>
               <div className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-lg shadow-sm">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                <span className="text-gray-700 font-medium text-xs sm:text-sm">2-Year Warranty</span>
+                <span className="text-gray-700 font-medium text-xs sm:text-sm">1 Year Warranty</span>
               </div>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-gray-900">Quick Links</h4>
+            <div className="space-y-2 sm:space-y-3">
+              <button onClick={() => handleLinkClick('#demo')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                Demo
+              </button>
+              <button onClick={() => handleLinkClick('#specs')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                Specs
+              </button>
+              <button onClick={() => handleLinkClick('#compare')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                Compare
+              </button>
+              <button onClick={() => handleLinkClick('#faq')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                FAQ
+              </button>
+              <button onClick={() => handleLinkClick('/track-order')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                Track Order
+              </button>
+              <button onClick={() => handleLinkClick('/effortless-living')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                #EffortlessLiving
+              </button>
             </div>
           </div>
 
           {/* Contact Information */}
           <div>
             <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-gray-900">Contact Us</h4>
-            <div className="space-y-4 sm:space-y-5">
+            <div className="space-y-4 sm:space-y-5 mb-6 sm:mb-8">
               <div className="flex items-center space-x-3 sm:space-x-4">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-50 rounded-lg flex items-center justify-center">
                   <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
@@ -89,28 +115,6 @@ const Footer = () => {
                   <p className="text-gray-600 text-xs sm:text-sm">Nationwide delivery</p>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-gray-900">Quick Links</h4>
-            <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
-              <button onClick={() => handleLinkClick('#demo')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
-                Demo
-              </button>
-              <button onClick={() => handleLinkClick('#features')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
-                Features
-              </button>
-              <button onClick={() => handleLinkClick('#faq')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
-                FAQ
-              </button>
-              <button onClick={() => handleLinkClick('/track-order')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
-                Track Order
-              </button>
-              <button onClick={() => handleLinkClick('/effortless-living')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
-                #EffortlessLiving
-              </button>
             </div>
 
             <div>

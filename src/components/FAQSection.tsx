@@ -1,11 +1,68 @@
+import { useEffect, useRef } from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const FAQSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (sectionRef.current) {
+      gsap.fromTo(".faq-title",
+        { opacity: 0, y: 40, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1.4,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 70%",
+            end: "top 30%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+
+      gsap.fromTo(".faq-item",
+        { 
+          opacity: 0, 
+          x: -60, 
+          y: 30,
+          scale: 0.95,
+          filter: "blur(5px)"
+        },
+        {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          duration: 1.0,
+          stagger: {
+            amount: 1.2,
+            from: "start",
+            ease: "power2.out"
+          },
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 60%",
+            end: "top 20%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+  }, []);
   const faqs = [
     {
       question: "What is #TruePrice?",
@@ -42,13 +99,13 @@ const FAQSection = () => {
   ];
 
   return (
-    <section id="faq" className="py-12 sm:py-20 bg-secondary/30 scroll-snap-start">
+    <section ref={sectionRef} id="faq" className="py-12 sm:py-20 bg-secondary/30 scroll-snap-start">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="faq-title text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground px-2">
+          <p className="faq-title text-base sm:text-lg md:text-xl text-muted-foreground px-2">
             Clear answers to common questions. No hidden information, just like our pricing.
           </p>
         </div>
@@ -58,7 +115,7 @@ const FAQSection = () => {
             <AccordionItem 
               key={index} 
               value={`item-${index}`}
-              className="glass-effect rounded-lg sm:rounded-xl border-0 px-4 sm:px-6"
+              className="faq-item glass-effect rounded-lg sm:rounded-xl border-0 px-4 sm:px-6"
             >
               <AccordionTrigger className="text-left hover:no-underline hover:text-primary font-medium py-4 sm:py-6 text-sm sm:text-base">
                 {faq.question}

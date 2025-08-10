@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,25 +9,47 @@ import { downloadPDF } from "@/components/PDFInvoice";
 
 interface Order {
   id: string;
-  customer: string;
-  phone: string;
-  status: "Pending" | "Confirmed" | "Imported";
-  payment: "10%" | "100%";
-  installation: "Yes" | "No";
-  importStatus: "Not Ordered" | "Ordered" | "Delivered";
-  amount: number;
-  date: string;
+  curtainType: string;
+  motorType: string;
+  curtainSize: string;
+  installation: string;
+  remoteSetup: boolean;
+  paymentType: string;
+  customerInfo: {
+    name: string;
+    phone: string;
+    address: string;
+  };
+  pricing: {
+    total: number;
+    basePrice: number;
+    zigbeeHub: number;
+    installationCost: number;
+    remoteCost: number;
+  };
+  orderDate: string;
+  status: string;
 }
 
-const mockOrders: Order[] = [
-  { id: "ORD001", customer: "Ahmed Hassan", phone: "01712345678", status: "Pending", payment: "10%", installation: "Yes", importStatus: "Not Ordered", amount: 15000, date: "2024-01-15" },
-  { id: "ORD002", customer: "Fatima Khan", phone: "01823456789", status: "Confirmed", payment: "100%", installation: "No", importStatus: "Ordered", amount: 25000, date: "2024-01-14" },
-  { id: "ORD003", customer: "Rahman Ali", phone: "01934567890", status: "Imported", payment: "100%", installation: "Yes", importStatus: "Delivered", amount: 18000, date: "2024-01-13" }
-];
+
 
 const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    const loadOrders = () => {
+      const savedOrders = localStorage.getItem('orders');
+      if (savedOrders) {
+        setOrders(JSON.parse(savedOrders));
+      }
+    };
+    loadOrders();
+    
+    // Refresh orders every 5 seconds
+    const interval = setInterval(loadOrders, 5000);
+    return () => clearInterval(interval);
+  }, []);
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [paymentFilter, setPaymentFilter] = useState<string>("all");
 
@@ -43,9 +65,9 @@ const Admin = () => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Pending": return "bg-yellow-100 text-yellow-800";
-      case "Confirmed": return "bg-blue-100 text-blue-800";
-      case "Imported": return "bg-green-100 text-green-800";
+      case "pending": return "bg-yellow-100 text-yellow-800";
+      case "confirmed": return "bg-blue-100 text-blue-800";
+      case "completed": return "bg-green-100 text-green-800";
       default: return "bg-gray-100 text-gray-800";
     }
   };
@@ -83,9 +105,9 @@ const Admin = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="Pending">Pending</SelectItem>
-                <SelectItem value="Confirmed">Confirmed</SelectItem>
-                <SelectItem value="Imported">Imported</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="confirmed">Confirmed</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
               </SelectContent>
             </Select>
 
@@ -95,8 +117,8 @@ const Admin = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Payments</SelectItem>
-                <SelectItem value="10%">10% Paid</SelectItem>
-                <SelectItem value="100%">100% Paid</SelectItem>
+                <SelectItem value="cod">Cash on Delivery</SelectItem>
+                <SelectItem value="full">Online Payment</SelectItem>
               </SelectContent>
             </Select>
           </CardContent>
@@ -118,7 +140,7 @@ const Admin = () => {
                     <th className="text-left p-3">Status</th>
                     <th className="text-left p-3">Payment</th>
                     <th className="text-left p-3">Installation</th>
-                    <th className="text-left p-3">Import Status</th>
+                    <th className="text-left p-3">Product Details</th>
                     <th className="text-left p-3">Amount</th>
                     <th className="text-left p-3">Actions</th>
                   </tr>
@@ -127,33 +149,30 @@ const Admin = () => {
                   {filteredOrders.map((order) => (
                     <tr key={order.id} className="border-b hover:bg-gray-50">
                       <td className="p-3 font-medium">{order.id}</td>
-                      <td className="p-3">{order.customer}</td>
-                      <td className="p-3">{order.phone}</td>
+                      <td className="p-3">{order.customerInfo.name}</td>
+                      <td className="p-3">{order.customerInfo.phone}</td>
                       <td className="p-3">
                         <Badge className={getStatusColor(order.status)}>
                           {order.status}
                         </Badge>
                       </td>
                       <td className="p-3">
-                        <Badge variant={order.payment === "100%" ? "default" : "secondary"}>
-                          {order.payment}
+                        <Badge variant={order.paymentType === "full" ? "default" : "secondary"}>
+                          {order.paymentType === "full" ? "Online" : "COD"}
                         </Badge>
                       </td>
                       <td className="p-3">
-                        <Badge variant={order.installation === "Yes" ? "default" : "outline"}>
-                          {order.installation}
+                        <Badge variant={order.installation === "professional" ? "default" : "outline"}>
+                          {order.installation === "professional" ? "Professional" : "Self"}
                         </Badge>
                       </td>
                       <td className="p-3">
-                        <Badge className={
-                          order.importStatus === "Delivered" ? "bg-green-100 text-green-800" :
-                          order.importStatus === "Ordered" ? "bg-blue-100 text-blue-800" :
-                          "bg-gray-100 text-gray-800"
-                        }>
-                          {order.importStatus}
-                        </Badge>
+                        <div className="text-sm">
+                          <div>{order.curtainType} - {order.motorType}</div>
+                          <div className="text-gray-500">{order.curtainSize}</div>
+                        </div>
                       </td>
-                      <td className="p-3 font-medium">৳{order.amount.toLocaleString()}</td>
+                      <td className="p-3 font-medium">৳{order.pricing.total.toLocaleString()}</td>
                       <td className="p-3">
                         <div className="flex gap-2">
                           <Button size="sm" variant="outline" onClick={() => exportPDF(order)}>

@@ -1,8 +1,9 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import InteractiveDemo from "@/components/InteractiveDemo";
+import ProductSpec from "@/components/ProductSpec";
 import ProductComparison from "@/components/ProductComparison";
-import FeaturesSection from "@/components/FeaturesSection";
+
 import CustomizeSection from "@/components/CustomizeSection";
 import LifestyleGallery from "@/components/LifestyleGallery";
 import FAQSection from "@/components/FAQSection";
@@ -15,8 +16,10 @@ const Index = () => {
       <main className="scroll-snap-y">
         <HeroSection />
         <InteractiveDemo />
+        <div id="specs">
+          <ProductSpec />
+        </div>
         <ProductComparison />
-        <FeaturesSection />
         <CustomizeSection />
         <LifestyleGallery />
         <FAQSection />
