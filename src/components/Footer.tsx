@@ -1,19 +1,29 @@
 import { Facebook, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
+
+  const handleLinkClick = (href: string) => {
+    if (href.startsWith('#')) {
+      if (window.location.pathname !== '/') {
+        navigate('/');
+        setTimeout(() => {
+          document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        document.getElementById(href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate(href);
+    }
+  };
 
   const socialLinks = [
     { icon: Facebook, href: "#", label: "Facebook" },
     { icon: Instagram, href: "#", label: "Instagram" }, 
     { icon: Youtube, href: "#", label: "YouTube" }
-  ];
-
-  const footerLinks = [
-    { label: "About", href: "#" },
-    { label: "Privacy Policy", href: "#" },
-    { label: "Refund Policy", href: "#" },
-    { label: "Terms & Conditions", href: "#" }
   ];
 
   return (
@@ -86,31 +96,21 @@ const Footer = () => {
           <div>
             <h4 className="text-base sm:text-lg font-semibold mb-4 sm:mb-6 text-gray-900">Quick Links</h4>
             <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
-              {[
-                { label: "Demo", href: "#demo" },
-                { label: "Features", href: "#features" },
-                { label: "FAQ", href: "#faq" },
-                { label: "#EffortlessLiving", href: "/effortless-living" }
-              ].map((link, index) => (
-                <a
-                  key={index}
-                  href={link.href}
-                  className={`block transition-colors duration-200 text-sm sm:text-base ${
-                    (link.href.startsWith('#') && window.location.hash === link.href) ||
-                    (link.href === '/effortless-living' && window.location.pathname === '/effortless-living')
-                      ? 'text-blue-600 font-semibold' 
-                      : 'text-gray-700 hover:text-gray-900'
-                  }`}
-                  onClick={(e) => {
-                    if (link.href.startsWith('#')) {
-                      e.preventDefault();
-                      document.getElementById(link.href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                >
-                  {link.label}
-                </a>
-              ))}
+              <button onClick={() => handleLinkClick('#demo')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                Demo
+              </button>
+              <button onClick={() => handleLinkClick('#features')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                Features
+              </button>
+              <button onClick={() => handleLinkClick('#faq')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                FAQ
+              </button>
+              <button onClick={() => handleLinkClick('/track-order')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                Track Order
+              </button>
+              <button onClick={() => handleLinkClick('/effortless-living')} className="block text-left transition-colors duration-200 text-sm sm:text-base text-gray-700 hover:text-accent">
+                #EffortlessLiving
+              </button>
             </div>
 
             <div>
@@ -139,20 +139,34 @@ const Footer = () => {
                 © {currentYear} SmartCurtain. All rights reserved.
               </p>
               <div className="flex flex-wrap justify-center space-x-4 sm:space-x-6 text-xs sm:text-sm">
-                {footerLinks.map((link, index) => (
-                  <a key={index} href={link.href} className="text-gray-600 hover:text-gray-900 transition-colors">
-                    {link.label}
-                  </a>
-                ))}
+                <a href="/privacy-policy" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  Privacy Policy
+                </a>
+                <a href="/refund-policy" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  Refund Policy
+                </a>
+                <a href="/terms-conditions" className="text-gray-600 hover:text-gray-900 transition-colors">
+                  Terms & Conditions
+                </a>
               </div>
             </div>
             
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <div className="w-6 h-4 sm:w-8 sm:h-5 bg-green-600 rounded-sm flex items-center justify-center relative overflow-hidden">
-                <div className="w-3 h-2 sm:w-4 sm:h-3 bg-red-500 rounded-full"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-red-500 opacity-20"></div>
+            <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6">
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <div className="w-6 h-4 sm:w-8 sm:h-5 bg-green-600 rounded-sm flex items-center justify-center relative overflow-hidden">
+                  <div className="w-3 h-2 sm:w-4 sm:h-3 bg-red-500 rounded-full"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-red-500 opacity-20"></div>
+                </div>
+                <span className="text-gray-600 text-xs sm:text-sm font-medium">Made in Bangladesh</span>
               </div>
-              <span className="text-gray-600 text-xs sm:text-sm font-medium">Made in Bangladesh</span>
+              <a 
+                href="https://sohub.com.bd/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-gray-600 hover:text-blue-600 transition-colors text-xs sm:text-sm font-bold"
+              >
+                Powered by Sohub
+              </a>
             </div>
           </div>
         </div>

@@ -1,6 +1,8 @@
 import { ArrowLeft, Heart, Home, Zap, Shield, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const EffortlessLiving = () => {
   const navigate = useNavigate();
@@ -53,26 +55,7 @@ const EffortlessLiving = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass-effect border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
-          <div className="flex items-center justify-between">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/')}
-              className="flex items-center space-x-1 sm:space-x-2 hover:bg-secondary p-2 sm:p-3"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm sm:text-base">Back to Home</span>
-            </Button>
-            
-            <div className="flex items-center space-x-1 sm:space-x-2">
-              <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
-              <span className="font-semibold text-sm sm:text-base">#EffortlessLiving</span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       {/* Hero Section */}
       <section className="py-12 sm:py-16 md:py-20 hero-gradient">
@@ -240,6 +223,7 @@ const EffortlessLiving = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

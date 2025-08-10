@@ -30,8 +30,16 @@ const Navbar = () => {
   }, []);
 
   const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: 'smooth' });
+    if (window.location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        element?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const element = document.getElementById(id);
+      element?.scrollIntoView({ behavior: 'smooth' });
+    }
     setIsMobileMenuOpen(false);
   };
 
@@ -42,10 +50,8 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'glass-effect border-b border-border' : 'bg-transparent'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-2">
+    <nav className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-border">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-0.5">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
@@ -75,10 +81,10 @@ const Navbar = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`transition-colors duration-200 font-medium ${
+                className={`transition-colors duration-200 font-medium text-black hover:text-accent ${
                   activeSection === item.id 
-                    ? 'text-accent font-semibold' 
-                    : 'text-muted-foreground hover:text-foreground'
+                    ? 'font-bold text-accent' 
+                    : ''
                 }`}
               >
                 {item.label}
@@ -86,7 +92,11 @@ const Navbar = () => {
             ))}
             <button 
               onClick={() => navigate('/effortless-living')}
-              className="text-accent hover:text-accent-warm transition-colors duration-200 font-medium"
+              className={`transition-colors duration-200 font-medium ${
+                window.location.pathname === '/effortless-living'
+                  ? 'text-accent font-bold'
+                  : 'text-black hover:text-accent'
+              }`}
             >
               #EffortlessLiving
             </button>
@@ -115,10 +125,10 @@ const Navbar = () => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`block w-full text-left py-2 transition-colors duration-200 font-medium ${
+                  className={`block w-full text-left py-2 transition-colors duration-200 font-medium text-black hover:text-accent ${
                     activeSection === item.id 
-                      ? 'text-accent font-semibold' 
-                      : 'text-muted-foreground hover:text-foreground'
+                      ? 'font-bold text-accent' 
+                      : ''
                   }`}
                 >
                   {item.label}
@@ -129,7 +139,11 @@ const Navbar = () => {
                   navigate('/effortless-living');
                   setIsMobileMenuOpen(false);
                 }}
-                className="block w-full text-left py-2 text-accent hover:text-accent-warm transition-colors duration-200 font-medium"
+                className={`block w-full text-left py-2 transition-colors duration-200 font-medium ${
+                  window.location.pathname === '/effortless-living'
+                    ? 'text-accent font-bold'
+                    : 'text-black hover:text-accent'
+                }`}
               >
                 #EffortlessLiving
               </button>
